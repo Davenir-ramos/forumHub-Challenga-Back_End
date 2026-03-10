@@ -1,39 +1,47 @@
 package br.com.alura.forumHub.model;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import br.com.alura.forumHub.Dto.DadosCadastroTopico;
+import jakarta.persistence.*;
+import lombok.*;
 
-import javax.annotation.processing.Generated;
 import java.time.LocalDateTime;
 
-//@Entity(nome = "Topico")
-//@Table(name = "topicos")
-@NoArgsConstructor
+@Entity(name = "Topico")
+@Table(name = "topicos")
+@Getter
+@Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @EqualsAndHashCode(of = "id")
+
 public class Topico {
 
-//    @Id
-//    @GeneratedValue(strategy = GeneratedType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private  String titulo;
-    private LocalDateTime dateTCriacao = LocalDateTime.now();
+    private String titulo;
+    private String mensagem;
+    private LocalDateTime dataCriacao = LocalDateTime.now();
 
-  //  @Enumerated(EnumTypy.String)
-   // private StatusTopico status = StatusTopico.NAO_RESPONDIDO;
+    @Enumerated(EnumType.STRING)
+    private StatusTopico status = StatusTopico.NAO_RESPONDIDO;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "autor_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "autor_id")
     private Usuario autor;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "curso_id")
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "curso_id")
     private Curso curso;
 
-  //  @OneToMany(mappedBy = "topico", cascade = CascadeType.ALL)
-    //private List<Resposta> respostas = new ArrayList<>();
+
+    public Topico(DadosCadastroTopico dadosCadastroTopico, Usuario usuario, Curso curso) {
+        this.titulo = dadosCadastroTopico.titulo();
+        this.mensagem = dadosCadastroTopico.mensagem();
+        this.dataCriacao = LocalDateTime.now();
+        this.autor = usuario;
+        this.curso = curso;
+    }
 
 
 }
